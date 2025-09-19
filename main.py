@@ -51,7 +51,7 @@ def do_port():
 
     # If folders not found
     if not (f4_path and port_path):
-        return
+        return None
 
     # set file directories to prepare for copy
     # f4 source folders
@@ -123,6 +123,8 @@ def do_port():
     # fix lines on buildprop
     subprocess.run(Path.cwd() / "linefixes.sh", check=True)
 
+    return True
+
 
 # display options
 def disp_opts():
@@ -132,8 +134,10 @@ def disp_opts():
         "[3] Exit",
     ]
 
+    print()
     for ln in opts:
         print(ln)
+    print()
 
 
 # get choice
@@ -154,14 +158,19 @@ def main():
         choice = get_choice(ent_choice)
 
         if choice == "1":
-            do_port()
-            print("Porting Fixes Done!")
-            break
+            result = do_port()
+
+            if not result:
+                print("Unable to proceed")
+
+            else:
+                print("Porting Fixes Done!")
 
         elif choice == "2":
             download_essen()
 
         elif choice == "3":
+            print("Thank you for using the script!")
             break
 
         else:
