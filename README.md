@@ -5,8 +5,11 @@ This is a porting script that should be used in union with the DNA app. The goal
 ## Features
 
 [x] Add prop lines for fixes
+
 [x] Add a downloader for the fixes
+
 [x] User specify folder names for the script
+
 [ ] Add modding capabilities
 
 ## Prerequisites
