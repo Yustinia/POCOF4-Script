@@ -34,25 +34,23 @@ def check_exists():
     missing_dirs = []
 
     if not f4_path:
-        missing_dirs.append("F4")
+        missing_dirs.append(ent_f4_fd)
     if not port_path:
-        missing_dirs.append("PORT")
+        missing_dirs.append(ent_port_fd)
 
     if missing_dirs:
         print("Missing:", ", ".join(missing_dirs))
-        return False
+
     return f4_path, port_path
 
 
 # start porting
 def do_port():
-    valid_res = check_exists()
+    f4_path, port_path = check_exists()
 
     # If folders not found
-    if not valid_res:
+    if not (f4_path and port_path):
         return
-
-    f4_path, port_path = valid_res
 
     # set file directories to prepare for copy
     # f4 source folders
@@ -113,16 +111,59 @@ def do_port():
         if src.is_file():
             shutil.copy2(src, dest)
         elif src.is_dir():
-            shutil.copytree(src, dest)
+            shutil.copytree(src, dest, dirs_exist_ok=True)
 
     for src, dest in zip(fix_src, out_fixes):
         if src.is_file():
             shutil.copy2(src, dest)
         elif src.is_dir():
-            shutil.copytree(src, dest)
+            shutil.copytree(src, dest, dirs_exist_ok=True)
 
     # fix lines on buildprop
     subprocess.run(Path.cwd() / "linefixes.sh", check=True)
 
 
-do_port()
+# display options
+def disp_opts():
+    opts = [
+        "[1] Start Port",
+        "[2] Download Fixes",
+        "[3] Exit",
+    ]
+
+    for ln in opts:
+        print(ln)
+
+
+# get choice
+def get_choice(choice):
+    if choice in ["1", "2", "3"]:
+        return choice
+    return None
+
+
+# final process
+def main():
+    disp_opts()
+
+    while True:
+        ent_choice = input("> ").strip()
+        choice = get_choice(ent_choice)
+
+        if choice == "1":
+            do_port()
+            print("Porting Fixes Done!")
+            break
+
+        elif choice == "2":
+            download_essen()
+
+        elif choice == "3":
+            break
+
+        else:
+            print(f"Invalid: '{choice}'")
+
+
+if __name__ == "__main__":
+    main()
