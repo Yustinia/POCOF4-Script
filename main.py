@@ -11,7 +11,8 @@ hosfix = Path("/data/DNA/hosfix")
 # downloads fixes
 def download_essen():
     print("Downloading Fixes...")
-    subprocess.run(Path.cwd() / "downloader.sh", check=True)
+    script_path = Path.cwd() / "downloader.sh"
+    subprocess.run(script_path, check=True)
 
 
 # checks whether the unpacked folders exists, else None
@@ -144,9 +145,11 @@ def get_choice(choice):
 
 # final process
 def main():
-    disp_opts()
-
     while True:
+        # display menu
+        disp_opts()
+
+        # get choice
         ent_choice = input("> ").strip()
         choice = get_choice(ent_choice)
 

@@ -4,13 +4,13 @@ This is a porting script that should be used in union with the DNA app. The goal
 
 ## Features
 
-[x] Add prop lines for fixes
+- [x] Add prop lines for fixes
 
-[x] Add a downloader for the fixes
+- [x] Add a downloader for the fixes
 
-[x] User specify folder names for the script
+- [x] User specify folder names for the script
 
-[ ] Add modding capabilities
+- [ ] Add modding capabilities
 
 ## Prerequisites
 
@@ -25,20 +25,27 @@ This is a porting script that should be used in union with the DNA app. The goal
 
 ## Installation / Preparation
 
-1. Either download the `main.py`, `downloader.sh`, and `linefixes.sh` script or use `git clone`
+1. Use `git clone` to download the repository
 
 ```bash
 git clone https://github.com/Yustinia/POCOF4-Script.git
 ```
 
-2. Place the 3 scripts — main, downloader, and linefixes — inside the `/data/DNA` directory. Create if absent
-
-3. Give execution permissions to the shell scripts using Termux
+2. Give execution permissions to the shell scripts using Termux
 
 ```bash
 chmod +x downloader.sh
 chmod +x linefixes.sh
 ```
+
+3. Do a first run of `main.py` and choose "2" to prepare the fixes
+
+4. Place the following inside `/data/DNA`. Create if absent
+
+    - downloader.sh
+    - linefixes.sh
+    - main.py
+    - hosfix
 
 4. Download `python` via Termux using either commands
 
@@ -55,11 +62,9 @@ pacman -S python # if pkg manager is pacman
 python3 main.py
 ```
 
-2. Choose *Download* first to prepare the fixes
+2. Start with porting by entering "1"
 
-3. Start with porting by entering "1"
-
-4. Wait until it finishes
+3. Wait until it finishes
 
 ## Disclaimer
 
