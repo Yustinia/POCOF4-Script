@@ -2,6 +2,16 @@
 
 This is a porting script that should be used in union with the DNA app. The goal of this script is to automate the process of manually modifying files/folders/props
 
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Disclaimer](#disclaimer)
+- [Credits](#credits)
+- [License](#license)
+
 ## Features
 
 - [x] Add prop lines for fixes
@@ -16,8 +26,8 @@ This is a porting script that should be used in union with the DNA app. The goal
 
 ## Prerequisites
 
-- DNA application — For unpacking and repacking roms
-- Termux — For running the script
+- [DNA Application](https://t.me/OrcaCloud) — For unpacking and repacking roms
+- [Termux](https://f-droid.org/packages/com.termux/) — For running the script
 - Python — For the script to run
 - Rooted Device — Requires access at `/data`
 - Python Libraries
@@ -25,7 +35,7 @@ This is a porting script that should be used in union with the DNA app. The goal
     - subprocess
     - Path
 
-## Installation / Preparation
+## Installation
 
 1. Use `git clone` to clone the repo
 
@@ -40,20 +50,24 @@ chmod +x downloader.sh
 chmod +x linefixes.sh
 ```
 
-3. Do a first run of `main.py` and choose "2" to download the fixes
+3. Download the following packages in Termux (apt or pacman)
 
-4. Move/Copy the following inside `/data/DNA`. Create if absent
+    - python — To run the script
+    - aria2 — To download the fixes
+    - unzip — To unzip the archive
+    - sudo — For unzip to work
+
+```bash
+pacman -S --needed python aria2 unzip sudo # This is for pacman
+```
+
+4. Do a first run using `sudo python main.py` and choose "2" to download the fixes
+
+5. Move/Copy the following into `/data/DNA` using your preferred file manager or do it CLI-style. Create if absent
 
     - linefixes.sh
     - main.py
     - hosfix/
-
-5. Download the following packages in Termux (apt or pacman)
-
-    - python
-    - aria2
-    - unzip
-    - sudo
 
 ## Usage
 
@@ -84,6 +98,10 @@ python3 main.py
 
 Always create a reliable backup before proceeding. You have been warned
 
+## Credits
+
+Credits to olzhas0986 and the POCOF4 community for the help!
+
 ## License
 
-This *small* project is licensed under the **MIT License**
+This *small* project is licensed under the **[MIT License](https://github.com/Yustinia/POCOF4-Script/blob/main/LICENSE)**

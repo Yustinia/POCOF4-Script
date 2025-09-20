@@ -1,6 +1,8 @@
 #!/bin/bash
 
-port_dir="/data/DNA/PORT"
+read -rp "Provide the PORT directory name: " prov_dir
+
+port_dir="/data/DNA/$prov_dir"
 
 lnfix_of_rom() {
 
