@@ -6,4 +6,4 @@ fi
 
 # 7z x "$(pwd)/hosfix.zip" -o"$(pwd)/hosfix"
 mkdir -pv "$(pwd)/hosfix"
-sudo unzip "$(pwd)hosfix.zip" -d "$(pwd)/hosfix"
+sudo unzip "$(pwd)/hosfix.zip" -d "$(pwd)/hosfix"
