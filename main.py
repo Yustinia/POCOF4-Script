@@ -6,17 +6,43 @@ import shutil
 # set device global paths
 dna_dir = Path("/data/DNA")
 hosfix = Path("/data/DNA/hosfix")
+mods_dir = Path("/data/DNA/mods")
 
 
-# downloads fixes
+def mk_mod_dirs():
+    req_dirs = ["product", "system", "system_ext", "vendor"]
+
+    if not mods_dir.exists():
+        mods_dir.mkdir(parents=True, exist_ok=True)
+
+    for dir in req_dirs:
+        mod_path = mods_dir / dir
+        if not mod_path.exists():
+            mod_path.mkdir(parents=True, exist_ok=True)
+
+
+def start_mods(port_path):
+    if not port_path:
+        return "Port path not defined yet. Define them at option [1]"
+
+    for item in mods_dir.iterdir():
+        dest = port_path / item.name
+        shutil.copytree(item, dest, dirs_exist_ok=True)
+
+
+# === download essential files === #
+
+
 def download_essen():
     print("Downloading Fixes...")
     script_path = Path.cwd() / "downloader.sh"
     subprocess.run(script_path, check=True)
 
 
-# checks whether the unpacked folders exists, else None
-def validate_fd_exists(folder_name):
+# === check whether folder exists === #
+
+
+def validate_fd_exists(folder_name) -> Path | None:
     fd_path = dna_dir / folder_name
 
     if Path(fd_path).exists():
@@ -24,7 +50,6 @@ def validate_fd_exists(folder_name):
     return None
 
 
-# existence
 def check_exists():
     ent_f4_fd = input("Enter the F4 folder name: ").strip()
     ent_port_fd = input("Enter the PORT folder name: ").strip()
@@ -45,9 +70,11 @@ def check_exists():
     return f4_path, port_path
 
 
-# start porting
-def do_port():
-    f4_path, port_path = check_exists()
+# === start porting process === #
+
+
+def do_port(f4_path, port_path):
+    # f4_path, port_path = check_exists()
 
     # If folders not found
     if not (f4_path and port_path):
@@ -126,12 +153,16 @@ def do_port():
     return True
 
 
-# display options
+# === display main menu options
+
+
 def disp_opts():
     opts = [
-        "[1] Start Port",
-        "[2] Download Fixes",
-        "[3] Exit",
+        "[1] Define Path",
+        "[2] Start Port",
+        "[3] Modding",
+        "[4] Download Fixes",
+        "[5] Exit",
     ]
 
     print()
@@ -140,15 +171,17 @@ def disp_opts():
     print()
 
 
-# get choice
 def get_choice(choice):
-    if choice in ["1", "2", "3"]:
+    if choice in ["1", "2", "3", "4", "5"]:
         return choice
     return None
 
 
-# final process
+# === main execution === #
+
+
 def main():
+    f4_path, port_path = None, None
     while True:
         # display menu
         disp_opts()
@@ -158,23 +191,30 @@ def main():
         choice = get_choice(ent_choice)
 
         if choice == "1":
-            result = do_port()
-
-            if not result:
-                print("Unable to proceed")
-
-            else:
-                print("Porting Fixes Done!")
+            f4_path, port_path = check_exists()
 
         elif choice == "2":
-            download_essen()
+            if (
+                not f4_path
+                or not f4_path.exists()
+                or not port_path
+                or not port_path.exists()
+            ):
+                print("Unable to process")
+
+            else:
+                do_port(f4_path, port_path)
+                print("Porting Fixes Done!")
 
         elif choice == "3":
+            print(start_mods(port_path))
+
+        elif choice == "4":
+            download_essen()
+
+        elif choice == "5":
             print("Thank you for using the script!")
             break
-
-        else:
-            print(f"Invalid: '{choice}'")
 
 
 if __name__ == "__main__":
