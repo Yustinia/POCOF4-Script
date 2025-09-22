@@ -10,6 +10,18 @@ hosfix = Path("/data/DNA/hosfix")
 mods_dir = Path("/data/DNA/mods")
 
 
+def mod_display():
+    opts = [
+        "[1] Start",
+        "[2] Quit",
+    ]
+
+    print()
+    for line in opts:
+        print(line)
+    print()
+
+
 def mk_mod_dirs():
     req_dirs = ["product", "system", "system_ext", "vendor"]
 
@@ -35,6 +47,8 @@ def start_mods(port_path):
     for item in mods_dir.iterdir():
         dest = port_path / item.name
         shutil.copytree(item, dest, dirs_exist_ok=True)
+
+    return "Finished modding"
 
 
 # === download essential files === #
@@ -207,13 +221,14 @@ def main():
                 or not port_path
                 or not port_path.exists()
             ):
-                print("Unable to process")
+                print("Unable to process. Please define the paths with [1]")
+                continue
 
-            else:
-                do_port(f4_path, port_path)
-                print("Porting Fixes Done!")
+            do_port(f4_path, port_path)
+            print("Porting Fixes Done!")
 
         elif choice == "3":
+            mod_display()  # display options
             mk_mod_dirs()  # create directories first
 
             do_start = int(input("Do you want to start modding: "))
