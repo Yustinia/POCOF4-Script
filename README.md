@@ -21,6 +21,11 @@ This is a porting script that should be used in union with the DNA app. The goal
 - [x] User specify folder names for the script
 
 - [ ] Add modding capabilities
+    
+    - APK File Replacement
+    - 144hz capability
+    - System Optimizations
+    - Device prop spoofing
 
 - [ ] Extend porting capability to HyperOS 2.0, 2.1, and 2.2
 
