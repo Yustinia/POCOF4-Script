@@ -1,6 +1,6 @@
 # HyperOS Porting Script
 
-This is a porting script that should be used in union with the DNA app. The goal of this script is to automate the process of manually modifying files/folders/props
+This is a porting script used in union with the DNA app. The goal of this script is to automate the process of manually modifying files/folders/props
 
 ## Table of Contents
 
@@ -26,30 +26,17 @@ This is a porting script that should be used in union with the DNA app. The goal
 
 - [DNA Application](https://t.me/OrcaCloud) — For unpacking and repacking roms
 - [Termux](https://f-droid.org/packages/com.termux/) — For running the script
-- Python — For the script to run
-- Rooted Device — Requires access at `/data`
-- Python Libraries
+- Rooted Device — Requires access at `/data` and for DNA
+- Python Libraries Used:
     - shutil
     - subprocess
     - Path
 
 ## Installation
 
-1. Use `git clone` to clone the repo
+1. Download the following packages in Termux (apt or pacman)
 
-```bash
-git clone https://github.com/Yustinia/POCOF4-Script.git
-```
-
-2. Give execution permissions to the shell scripts using Termux
-
-```bash
-chmod +x downloader.sh
-chmod +x linefixes.sh
-```
-
-3. Download the following packages in Termux (apt or pacman)
-
+    - git — To clone the repo
     - python — To run the script
     - aria2 — To download the fixes
     - unzip — To unzip the archive
@@ -59,11 +46,26 @@ chmod +x linefixes.sh
 pacman -S --needed python aria2 unzip sudo # This is for pacman
 ```
 
-4. Do a first run using `sudo python main.py` and choose "2" to download the fixes
+2. Use `git clone` to clone the repo to anywhere on your device
+
+```bash
+git clone https://github.com/Yustinia/POCOF4-Script.git
+```
+
+3. Give execution permissions to the shell scripts using Termux
+
+```bash
+chmod +x downloader.sh
+chmod +x linefixes.sh
+```
+
+4. Do a first run using `sudo python main.py` and download the fixes
 
 5. Move/Copy the following into `/data/DNA` using your preferred file manager or do it CLI-style. Create if absent
 
     - linefixes.sh
+    - checkpaths.py
+    - portingprocess.py
     - main.py
     - hosfix/
 
@@ -76,7 +78,7 @@ pacman -S --needed python aria2 unzip sudo # This is for pacman
 2. Run the python script with
 
 ```bash
-python3 main.py
+sudo python main.py
 ```
 
 3. Start with porting by entering "1"
@@ -85,11 +87,11 @@ python3 main.py
 
 5. Wait until it completes
 
-6. Enter "3" to exit
+6. Exit the tool
 
 ## Disclaimer
 
-**USE AT YOUR OWN RISK!** This script requires and modifies the `/data` directory and can potentially:
+**USE AT YOUR OWN RISK!** This script requires access at `/data/DNA`, while it only accesses that specific directory, it might potentially have the following:
 
 - Brick your device
 - Cause data loss
