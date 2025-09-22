@@ -1,4 +1,5 @@
 # set libraries
+
 from pathlib import Path
 import subprocess
 import shutil
@@ -19,6 +20,12 @@ def mk_mod_dirs():
         mod_path = mods_dir / dir
         if not mod_path.exists():
             mod_path.mkdir(parents=True, exist_ok=True)
+
+
+def should_start_mod(do_start):
+    if do_start in [1, 2]:
+        return do_start
+    return None
 
 
 def start_mods(port_path):
@@ -207,7 +214,13 @@ def main():
                 print("Porting Fixes Done!")
 
         elif choice == "3":
-            print(start_mods(port_path))
+            mk_mod_dirs()  # create directories first
+
+            do_start = int(input("Do you want to start modding: "))
+            choice = should_start_mod(do_start)
+
+            if choice == 1:
+                print(start_mods(port_path))
 
         elif choice == "4":
             download_essen()
