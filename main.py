@@ -47,7 +47,7 @@ def main():
         )
 
         if missing_dir:
-            print("Missing: ", ", ".join(missing_dir))
+            print("Missing:", ", ".join(missing_dir))
             continue
 
         print(f"F4: {set_pocof4_path}, PORT: {set_port_path}")
