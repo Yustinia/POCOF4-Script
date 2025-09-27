@@ -1,8 +1,8 @@
 # from portingprocess import start_porting
-from pathlib import Path
+# from pathlib import Path
+# import shutil
+# import subprocess
 from HOSPorter import Porter
-import shutil
-import subprocess
 
 
 def menu_disp_opts(set_dirs: bool):

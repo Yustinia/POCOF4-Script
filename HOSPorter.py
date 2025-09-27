@@ -106,3 +106,45 @@ class Porter:
         subprocess.run([str(self.SHELL_SCRIPTS / "linefixes.sh")], check=True)
 
         return True
+
+
+class Modder:
+    DNA_DIR = Path("/data/DNA")
+    HOSFIX_DIR = Path("/data/DNA/hosfix")
+    SHELL_SCRIPTS = Path("/data/DNA/shell-scripts")
+
+    def __init__(self, f4_dir, port_dir) -> None:
+        self.f4_dir = f4_dir
+        self.port_dir = port_dir
+
+    def full_rw_fstab(self):
+        # needs f4 vendor and delete port mi_ext/init file
+        f4_fstab_file = self.DNA_DIR / self.f4_dir / "vendor" / "etc" / "fstab.qcom"
+        port_mi_ext = self.DNA_DIR / self.port_dir / "mi_ext" / "etc" / "init"
+
+        for item in port_mi_ext.iterdir():
+            if item.is_file():
+                item.unlink()
+            elif item.is_dir():
+                shutil.rmtree(item)
+
+    def high_rr(self):
+        # needs f4 vendor and modify munch.xml
+        f4_buildprop = self.DNA_DIR / self.f4_dir / "vendor" / "build.prop"
+        f4_defaultprop = self.DNA_DIR / self.f4_dir / "vendor" / "default.prop"
+        f4_munchxml = (
+            self.DNA_DIR
+            / self.port_dir
+            / "product"
+            / "etc"
+            / "device_features"
+            / "munch.xml"
+        )
+
+    def eliminate_data_app(self):
+        # moves all data_apps to priv_app
+        port_data_app = self.DNA_DIR / self.port_dir / "product" / "data-app"
+        port_priv_app = self.DNA_DIR / self.port_dir / "product" / "priv-app"
+
+        for item in port_data_app.iterdir():
+            shutil.move(str(item), port_priv_app)
