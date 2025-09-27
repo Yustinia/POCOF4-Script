@@ -40,55 +40,57 @@ This is a porting script used in union with the DNA app. The goal of this script
     - python — To run the script
     - aria2 — To download the fixes
     - unzip — To unzip the archive
-    - sudo — For unzip to work
+    - tsu — To access `/data`
 
 ```bash
-pacman -S --needed git python aria2 unzip sudo # This is for pacman
+pacman -S --needed git python aria2 unzip tsu # This is for pacman
 ```
 
-2. Use `git clone` to clone the repo to anywhere on your device.
+2. Activate `tsu` then `cd` into `/data/DNA` and `git clone` to clone the repo to your device.
 
 ```bash
+tsu
+cd /data/DNA
 git clone https://github.com/Yustinia/POCOF4-Script.git
 ```
 
 3. Give execution permissions to the shell scripts using Termux.
 
 ```bash
+cd shell-scripts
 chmod +x downloader.sh
 chmod +x linefixes.sh
 ```
 
-4. Do a first run using `sudo python main.py` and download the fixes.
+4. Do a first run using `python main.py` and download the fixes.
 
-5. Move/Copy the following into `/data/DNA` using your preferred file manager or do it CLI-style. Create if absent.
+5. Move the following into `/data/DNA` using your preferred file manager or do it CLI-style.
 
-    - linefixes.sh
-    - checkpaths.py
-    - portingprocess.py
-    - main.py
+    - shell-scripts/
     - hosfix/
+    - main.py
+    - portingprocess.py
 
 ```bash
-cd POCOF4-Script/
-mv -fv linefixes.sh checkpaths.py portingprocess.py main.py hosfix/ /data/DNA
+cd /data/DNA/POCOF4-Script/
+mv -fv portingprocess.py main.py hosfix/ shell-scripts/ /data/DNA
 ```
 
 ## Usage
 
-1. Using Termux, `cd /data/DNA`.
+1. Using Termux, activate `tsu` then `cd /data/DNA`.
 
-> To list files, use `sudo ls -latr`
+> To list files, use `ls -latr`
 
 2. Run the python script with.
 
 ```bash
-sudo python main.py
+python main.py
 ```
 
 3. Provide the folder name being asked.
 
-4. Choose [1] to start the porting process.
+4. Start the porting process
 
 5. Wait until it completes.
 
