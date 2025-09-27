@@ -1,35 +1,8 @@
+# from portingprocess import start_porting
 from pathlib import Path
-from portingprocess import start_porting
+from HOSPorter import Porter
 import shutil
 import subprocess
-
-# GLOBAL PATHS
-DNA_DIR = Path("/data/DNA")
-HOSFIX_DIR = Path("/data/DNA/hosfix")
-SHELL_SCRIPTS = Path("/data/DNA/shell-scripts")
-
-
-def download_fixes():
-    if not HOSFIX_DIR.exists():
-        try:
-            subprocess.run(SHELL_SCRIPTS / "downloader.sh", check=True)
-            return True, f"{HOSFIX_DIR} has been created"
-        except subprocess.CalledProcessError as e:
-            return False, f"Failed: {e}"
-    return True, f"{HOSFIX_DIR} already exists"
-
-
-def check_dir_exists(poco_f4: str, port: str):
-    poco_f4_dir = DNA_DIR / poco_f4
-    port_dir = DNA_DIR / port
-
-    missing_dir = []
-    if not poco_f4_dir.exists():
-        missing_dir.append(poco_f4_dir.name)
-    if not port_dir.exists():
-        missing_dir.append(port_dir.name)
-
-    return poco_f4_dir, port_dir, missing_dir
 
 
 def menu_disp_opts(set_dirs: bool):
@@ -52,6 +25,7 @@ def menu_disp_opts(set_dirs: bool):
 def main():
     is_set_dirs = False
     f4_folder, port_folder = None, None
+    porter = Porter(None, None)
     menu_choose_opt = [1, 2, 4]
 
     while True:
@@ -71,7 +45,11 @@ def main():
             f4_folder = input("Enter the F4 folder name: ").strip()
             port_folder = input("Enter the PORT folder name: ").strip()
 
-            f4_folder, port_folder, missing_fds = check_dir_exists(
+            # f4_folder, port_folder, missing_fds = check_dir_exists(
+            #     f4_folder, port_folder
+            # )
+
+            f4_folder, port_folder, missing_fds = porter.check_dir_exists(
                 f4_folder, port_folder
             )
 
@@ -79,14 +57,18 @@ def main():
                 print("Missing:", ", ".join(missing_fds))
             else:
                 is_set_dirs = True
+                porter = Porter(f4_folder, port_folder)
 
         elif do_choice == 2:  # download fixes
-            ph, msg = download_fixes()
+            ph, msg = porter.download_fixes()
             print(msg)
 
         elif do_choice == 3:
             print("Start Porting...")
-            result = start_porting(f4_folder, port_folder)
+
+            # result = start_porting(f4_folder, port_folder)
+
+            result = porter.start_porting()
             if result:
                 print("Successful!")
             else:
