@@ -40,6 +40,13 @@ class Porter:
         return missing_dirs
 
     def start_porting(self):
+        linefix_script = self.SHELL_SCRIPTS / "linefixes.sh"
+
+        if not os.access(linefix_script, os.X_OK):
+            raise PermissionError(
+                f"{linefix_script.name} is not executable. Use `chmod +x` to fix it"
+            )
+
         # set file directories to prepare for copy
         # f4 source folders
         f4_src = (
@@ -108,4 +115,4 @@ class Porter:
                 shutil.copytree(src, dest, dirs_exist_ok=True)
 
         # fix lines on buildprop
-        subprocess.run([str(self.SHELL_SCRIPTS / "linefixes.sh")], check=True)
+        subprocess.run([str(linefix_script)], check=True)
