@@ -1,57 +1,87 @@
-from pathlib import Path
-import shutil
-
-F4PATH = Path.cwd() / "POCOF4"
-PORTPATH = Path.cwd() / "PORT"
-HOSFIX = Path.cwd() / "HOSFix"
+from hoscopyfix import HOSCopyFixes
+from hosport import HOSPort
+from hosmodder import HOSModder
 
 
-class HOSCopyFixes:
-    def __init__(self) -> None:
-        self.f4_path = F4PATH
-        self.port_path = PORTPATH
-        self.hosfix = HOSFIX
+def show_all_opts() -> None:  # display
+    options = [
+        "[Q] Exit",
+        "[1] Start Port",
+        "[2] Add Mods",
+    ]
 
-    def _copy_dirs(self, src_dest: dict[str, Path], tar_dest: Path) -> list[str]:
-        if not tar_dest.exists():
-            raise ValueError(f"'{tar_dest}' does not exist")
-
-        processed = []
-        for path in src_dest.values():
-            shutil.copytree(path, tar_dest / path.name, dirs_exist_ok=True)
-            processed.append(f"'{path}' copied to '{tar_dest/path.name}'")
-
-        return processed
-
-    def fix_product(self) -> list[str]:
-        prod_paths = {
-            "prod_app": self.hosfix / "product" / "app",
-            "prod_overlay": self.hosfix / "product" / "overlay",
-            "prod_perms": self.hosfix / "product" / "permissions",
-            "prod_privapp": self.hosfix / "product" / "priv-app",
-        }
-
-        return self._copy_dirs(prod_paths, self.port_path / "product")
-
-    def fix_system(self) -> list[str]:
-        system_paths = {
-            "sys_app": self.hosfix / "system" / "app",
-            "sys_lib": self.hosfix / "system" / "lib",
-            "sys_lib64": self.hosfix / "system" / "lib64",
-            "sys_privapp": self.hosfix / "system" / "priv-app",
-        }
-
-        return self._copy_dirs(system_paths, self.port_path / "system")
-
-    def fix_vendor(self) -> list[str]:
-        vendor_paths = {
-            "ven_lib": self.hosfix / "vendor" / "lib",
-            "ven_lib64": self.hosfix / "vendor" / "lib64",
-        }
-
-        return self._copy_dirs(vendor_paths, self.f4_path / "vendor")
+    print()
+    for line in options:
+        print(line)
+    print()
 
 
-class F4ToPort:
-    def __init__(self) -> None:
-        pass
+def check_if_valid_choice(choice: str):  # input
+    if choice.upper() in [str(i) for i in range(3)] + ["Q"]:
+        return choice.upper()
+    raise ValueError(f"Invalid '{choice}' got")
+
+
+def main():
+    get_choice = None
+    show_all_opts()
+
+    while True:
+        try:
+            get_choice = input("Enter choice: ").strip()
+            get_choice = check_if_valid_choice(get_choice)
+        except ValueError as e:
+            print(e)
+            continue
+        break
+
+    if get_choice == "Q":
+        print("Exiting...")
+        return
+
+    match get_choice:
+        case "1":
+            processed_prod = processed_sys = processed_vendor = None
+
+            hosporter = HOSPort()
+            hosfixer = HOSCopyFixes()
+            print("Start Porting...")
+
+            try:
+                hosporter.copy_f4_to_port()
+            except ValueError as e:
+                print(e)
+
+            hosporter.fix_props()
+            try:
+                processed_prod = hosfixer.fix_product()
+                processed_sys = hosfixer.fix_system()
+                processed_vendor = hosfixer.fix_vendor()
+            except ValueError as e:
+                print(e)
+
+            processed = [
+                processed_prod,
+                processed_sys,
+                processed_vendor,
+            ]
+
+            for line in processed:
+                print("Processed:", line)
+
+        case "2":
+            processed_mods = []
+
+            hosmodding = HOSModder()
+
+            try:
+                processed_mods = hosmodding.copy_mods()
+            except ValueError as e:
+                print(e)
+
+            for line in processed_mods:
+                print(line)
+
+
+if __name__ == "__main__":
+    main()
