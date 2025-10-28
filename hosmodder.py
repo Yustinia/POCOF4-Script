@@ -16,6 +16,7 @@ class HOSModder:
         for base_path in [self.mods, self.port_path]:
             missing = [path for path in directories if not (base_path / path).exists()]
 
+            # capture early missing files
             if missing:
                 raise ValueError(f"Aborted: '{missing}' not found at '{base_path}'")
 

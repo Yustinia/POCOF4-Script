@@ -23,10 +23,10 @@ def check_if_valid_choice(choice: str):  # input
 
 
 def main():
-    get_choice = None
     show_all_opts()
 
     while True:
+        get_choice = None
         try:
             get_choice = input("Enter choice: ").strip()
             get_choice = check_if_valid_choice(get_choice)
@@ -53,6 +53,7 @@ def main():
                 print(e)
 
             hosporter.fix_props()
+
             try:
                 processed_prod = hosfixer.fix_product()
                 processed_sys = hosfixer.fix_system()

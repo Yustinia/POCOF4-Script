@@ -10,8 +10,8 @@ lnfix_of_rom() {
     #2 Copies all line from build.prop of mi_ext
     sed -n '1,20p' "$PORT_dir/mi_ext/etc/build.prop" >> "$PORT_dir/product/etc/build.prop"
 
-    #3 Delete key from build.prop of product
-    sed -i '/^persist.sys.enhance_vkpipelinecache.enable=/d' "$PORT_dir/product/etc/build.prop"
+    #3 Delete vk key from build.prop of product
+    sed -i '/vk/d' "$PORT_dir/product/etc/build.prop"
 
     #4 Modify codename to munch
     sed -i 's/^\(ro.product.product.name=miproduct_\).*/\1munch/' "$PORT_dir/product/etc/build.prop"
