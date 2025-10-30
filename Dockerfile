@@ -4,6 +4,8 @@ RUN pacman -Syyu --noconfirm
 
 RUN pacman -S --needed --noconfirm python python-pip vim
 
+RUN python -m pip install --break-system-packages unsuper numpy
+
 WORKDIR /HOSPorter
 
 COPY . /HOSPorter/

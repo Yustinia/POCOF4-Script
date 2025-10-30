@@ -1,13 +1,15 @@
 from hoscopyfix import HOSCopyFixes
 from hosport import HOSPort
 from hosmodder import HOSModder
+from unpacker import SuperUnpacker
 
 
 def show_all_opts() -> None:  # display
     options = [
-        "[Q] Exit",
+        "[0] Exit",
         "[1] Start Port",
         "[2] Add Mods",
+        "[3] Extract Super",
     ]
 
     print()
@@ -16,10 +18,10 @@ def show_all_opts() -> None:  # display
     print()
 
 
-def check_if_valid_choice(choice: str):  # input
-    if choice.upper() in [str(i) for i in range(3)] + ["Q"]:
-        return choice.upper()
-    raise ValueError(f"Invalid '{choice}' got")
+def check_if_valid_choice(choice: int):  # input
+    if choice in [int(i) for i in range(4)]:
+        return choice
+    raise ValueError(f"Invalid: '{choice}' got")
 
 
 def main():
@@ -28,19 +30,19 @@ def main():
     while True:
         get_choice = None
         try:
-            get_choice = input("Enter choice: ").strip()
+            get_choice = int(input("Enter choice: "))
             get_choice = check_if_valid_choice(get_choice)
         except ValueError as e:
             print(e)
             continue
         break
 
-    if get_choice == "Q":
+    if get_choice == 0:
         print("Exiting...")
         return
 
     match get_choice:
-        case "1":
+        case 1:
             processed_prod = processed_sys = processed_vendor = None
 
             hosporter = HOSPort()
@@ -70,7 +72,7 @@ def main():
             for line in processed:
                 print("Processed:", line)
 
-        case "2":
+        case 2:
             processed_mods = []
 
             hosmodding = HOSModder()
@@ -81,6 +83,13 @@ def main():
                 print(e)
 
             for line in processed_mods:
+                print(line)
+
+        case 3:
+            unpacker = SuperUnpacker()
+            results = unpacker.ext_super()
+
+            for line in results:
                 print(line)
 
 
