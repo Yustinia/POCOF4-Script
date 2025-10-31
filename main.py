@@ -1,6 +1,4 @@
-from hoscopyfix import HOSCopyFixes
-from hosport import HOSPort
-from hosmodder import HOSModder
+from hosClass import HOSPort, HOSModder, HOSCopyFixes
 from unpacker import SuperUnpacker
 
 
@@ -47,6 +45,7 @@ def main():
 
             hosporter = HOSPort()
             hosfixer = HOSCopyFixes()
+
             print("Start Porting...")
 
             try:
@@ -77,6 +76,8 @@ def main():
 
             hosmodding = HOSModder()
 
+            print("Copying Mods...")
+
             try:
                 processed_mods = hosmodding.copy_mods()
             except ValueError as e:
@@ -87,6 +88,9 @@ def main():
 
         case 3:
             unpacker = SuperUnpacker()
+
+            print("Unpacking super.img...")
+
             results = unpacker.ext_super()
 
             for line in results:
